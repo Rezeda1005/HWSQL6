@@ -28,7 +28,7 @@ class Book(Base):
 
 
 class Stock(Base):
-    __tablename__ = "stoks"
+    __tablename__ = "stocks"
 
     id = sq.Column(sq.Integer, primary_key=True)
     count = sq.Column(sq.Integer, nullable=False, default=0)
@@ -44,7 +44,7 @@ class Sale(Base):
 
     id = sq.Column(sq.Integer, primary_key=True)
     price = sq.Column(sq.DECIMAL, nullable=False)
-    data_sale = sq.Column(sq.DATETIME, nullable=False)
+    date_sale = sq.Column(sq.DateTime, nullable=False)
     count = sq.Column(sq.Integer, nullable=False, default=1)
     id_stock = sq.Column(sq.Integer, sq.ForeignKey("stocks.id"), nullable=False)
 
@@ -53,4 +53,5 @@ class Sale(Base):
 
 def create_tables(engine):
     Base.metadata.drop_all(engine)
+    assert isinstance(Base.metadata.create_all, object)
     Base.metadata.create_all(engine)

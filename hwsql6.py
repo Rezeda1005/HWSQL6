@@ -23,18 +23,21 @@ for record in data:
         'sale': Sale,
     }[record.get('model')]
     session.add(model(id=record.get('pk'), **record.get('fields')))
-session.comit()
+session.commit()
 
 q = session.query(Publisher).filter(Publisher.name == input("Введите название издателя: "))
 for s in q.all():
     print(s.id, s.name)
 
-
 q = session.query(Publisher).filter(Publisher.id == input("Введите идентификатор (id) издателя: "))
 for s in q.all():
     print(s.id, s.name)
 
-
 subq = session.query(Shop).all()
 for s in subq:
     print(s.id, s.name)
+
+
+subq = session.query(Stock).join(Shop).subquery()
+for b in session.query(Publisher).join(Book).filter(Book.id == subq.c.id_book).all():
+    print(f"\t {b.id}   {b.name}")
